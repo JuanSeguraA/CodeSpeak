@@ -28,7 +28,7 @@ export default function Home() {
 
       <div className="mt-8 p-4 bg-gray-900 text-green-400 font-mono text-xs overflow-auto max-h-64">
         <p>Timeline entries: {timeline.length}</p>
-        {timeline.map((entry, i) => (
+        {[...timeline].sort((a, b) => a.time - b.time).map((entry, i) => (
           <div key={i}>
             [{entry.time}ms] {entry.type}: {entry.content.slice(0, 60)}
           </div>

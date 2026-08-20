@@ -10,6 +10,7 @@ export default function RecordButton({
   const [isRecording, setIsRecording] = useState(false)
   const [transcript, setTranscript] = useState("")
   const recognitionRef = useRef<any>(null)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   function startRecording() {
     const SpeechRecognition =
@@ -26,7 +27,13 @@ export default function RecordButton({
         fullTranscript += event.results[i][0].transcript
       }
       setTranscript(fullTranscript)
-      onTranscriptUpdate(fullTranscript)
+
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current)
+      }
+      debounceRef.current = setTimeout(() => {
+        onTranscriptUpdate(fullTranscript)
+      }, 2000)
     }
 
     recognition.start()
