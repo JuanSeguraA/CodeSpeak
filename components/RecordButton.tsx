@@ -2,14 +2,18 @@
 
 import { useState, useRef } from "react"
 
-export default function RecordButton() {
+export default function RecordButton({
+  onTranscriptUpdate,
+}: {
+  onTranscriptUpdate: (text: string) => void
+}) {
   const [isRecording, setIsRecording] = useState(false)
   const [transcript, setTranscript] = useState("")
   const recognitionRef = useRef<any>(null)
 
   function startRecording() {
     const SpeechRecognition =
-      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition // OR condition is to use whichever version is available on current browser
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
 
     const recognition = new SpeechRecognition()
     recognition.continuous = true
@@ -22,6 +26,7 @@ export default function RecordButton() {
         fullTranscript += event.results[i][0].transcript
       }
       setTranscript(fullTranscript)
+      onTranscriptUpdate(fullTranscript)
     }
 
     recognition.start()
