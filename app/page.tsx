@@ -73,6 +73,7 @@ export default function Home() {
   const [isGrading, setIsGrading] = useState(false)
   const [feedback, setFeedback] = useState("")
   const [selectedQuestion, setSelectedQuestion] = useState<Question>(QUESTIONS[0])
+  const [sessionId, setSessionId] = useState(0)
 
   function addEntry(type: "code" | "speech", content: string) {
     setTimeline((prev) => [
@@ -89,45 +90,61 @@ export default function Home() {
     setIsGrading(false)
   }
 
-return (
-  <main className="flex min-h-screen flex-col p-8 gap-4">
-    <h1 className="text-4xl font-bold text-white">CodeAloud</h1>
-    <p className="text-gray-400">Practice explaining your code out loud, like a real interview</p>
+  function handleReset() {
+    setTimeline([])
+    setFeedback("")
+    setSessionId((prev) => prev + 1)
+  }
 
-    <select
-      value={selectedQuestion.id}
-      onChange={(e) => {
-        const found = QUESTIONS.find((q) => q.id === e.target.value)
-        if (found) setSelectedQuestion(found)
-      }}
-      className="p-2 bg-gray-800 text-white rounded"
-    >
-      {QUESTIONS.map((q) => (
-        <option key={q.id} value={q.id}>
-          {q.title}
-        </option>
-      ))}
-    </select>
+  return (
+    <main className="flex min-h-screen flex-col p-8 gap-4">
+      <h1 className="text-4xl font-bold text-white">CodeAloud</h1>
+      <p className="text-gray-400">Practice explaining your code out loud, like a real interview</p>
 
-    <div className="p-4 bg-gray-800 text-white rounded">
-      {selectedQuestion.prompt}
-    </div>
+      <select
+        value={selectedQuestion.id}
+        onChange={(e) => {
+          const found = QUESTIONS.find((q) => q.id === e.target.value)
+          if (found) setSelectedQuestion(found)
+        }}
+        className="p-2 bg-gray-800 text-white rounded"
+      >
+        {QUESTIONS.map((q) => (
+          <option key={q.id} value={q.id}>
+            {q.title}
+          </option>
+        ))}
+      </select>
 
-    <RecordButton onTranscriptUpdate={(text) => addEntry("speech", text)} />
-    <CodeEditor onCodeChange={(code) => addEntry("code", code)} />
-
-    <button
-      onClick={handleGetFeedback}
-      disabled={isGrading}
-      className="px-4 py-2 bg-green-600 text-white rounded disabled:opacity-50"
-    >
-      {isGrading ? "Grading..." : "Get Feedback"}
-    </button>
-
-    {feedback && (
       <div className="p-4 bg-gray-800 text-white rounded">
-        {feedback}
+        {selectedQuestion.prompt}
       </div>
-    )}
-  </main>
-)}
+
+      <RecordButton key={`record-${sessionId}`} onTranscriptUpdate={(text) => addEntry("speech", text)} />
+      <CodeEditor key={`code-${sessionId}`} onCodeChange={(code) => addEntry("code", code)} />
+
+      <div className="flex gap-2">
+        <button
+          onClick={handleGetFeedback}
+          disabled={isGrading}
+          className="px-4 py-2 bg-green-600 text-white rounded disabled:opacity-50"
+        >
+          {isGrading ? "Grading..." : "Get Feedback"}
+        </button>
+
+        <button
+          onClick={handleReset}
+          className="px-4 py-2 bg-gray-600 text-white rounded"
+        >
+          Reset
+        </button>
+      </div>
+
+      {feedback && (
+        <div className="p-4 bg-gray-800 text-white rounded">
+          {feedback}
+        </div>
+      )}
+    </main>
+  )
+}
