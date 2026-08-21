@@ -22,9 +22,22 @@ function formatTimelineForGrading(entries: TimelineEntry[]): string {
     .join("\n")
 }
 
+async function getFeedback(transcript: string): Promise<string> {
+  const response = await fetch("/api/grade", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ transcript }),
+  })
+
+  const data = await response.json()
+  return data.feedback
+}
+
 export default function Home() {
   const [timeline, setTimeline] = useState<TimelineEntry[]>([])
   const [startTime] = useState(Date.now())
+  const [isGrading, setIsGrading] = useState(false)
+  const [feedback, setFeedback] = useState("")
 
   function addEntry(type: "code" | "speech", content: string) {
     setTimeline((prev) => [
@@ -33,23 +46,32 @@ export default function Home() {
     ])
   }
 
+  async function handleGetFeedback() {
+    setIsGrading(true)
+    const formatted = formatTimelineForGrading(timeline)
+    const result = await getFeedback(formatted)
+    setFeedback(result)
+    setIsGrading(false)
+  }
+
   return (
-    <main className="flex min-h-screen flex-col p-8">
+    <main className="flex min-h-screen flex-col p-8 gap-4">
       <RecordButton onTranscriptUpdate={(text) => addEntry("speech", text)} />
       <CodeEditor onCodeChange={(code) => addEntry("code", code)} />
 
-      <div className="mt-8 p-4 bg-gray-900 text-green-400 font-mono text-xs overflow-auto max-h-64">
-        <p>Timeline entries: {timeline.length}</p>
-        {[...timeline].sort((a, b) => a.time - b.time).map((entry, i) => (
-          <div key={i}>
-            [{entry.time}ms] {entry.type}: {entry.content.slice(0, 60)}
-          </div>
-        ))}
-      </div>
+      <button
+        onClick={handleGetFeedback}
+        disabled={isGrading}
+        className="px-4 py-2 bg-green-600 text-white rounded disabled:opacity-50"
+      >
+        {isGrading ? "Grading..." : "Get Feedback"}
+      </button>
 
-      <div className="mt-8 p-4 bg-gray-900 text-green-400 font-mono text-xs overflow-auto max-h-64">
-        <pre>{formatTimelineForGrading(timeline)}</pre>
-      </div>
+      {feedback && (
+        <div className="p-4 bg-gray-800 text-white rounded">
+          {feedback}
+        </div>
+      )}
     </main>
   )
 }
