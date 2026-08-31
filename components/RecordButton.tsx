@@ -9,12 +9,30 @@ export default function RecordButton({
 }) {
   const [isRecording, setIsRecording] = useState(false)
   const [transcript, setTranscript] = useState("")
+  const [error, setError] = useState("")
   const recognitionRef = useRef<any>(null)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const transcriptRef = useRef("")
+  const lastSentRef = useRef("")
+  const flushIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  function flushTranscript() {
+    const current = transcriptRef.current
+    if (current !== lastSentRef.current) {
+      onTranscriptUpdate(current.slice(lastSentRef.current.length))
+      lastSentRef.current = current
+    }
+  }
 
   function startRecording() {
     const SpeechRecognition =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+
+    if (!SpeechRecognition) {
+      setError("Speech recognition isn't supported in this browser. Try Chrome or Edge.")
+      return
+    }
+
+    setError("")
 
     const recognition = new SpeechRecognition()
     recognition.continuous = true
@@ -27,22 +45,38 @@ export default function RecordButton({
         fullTranscript += event.results[i][0].transcript
       }
       setTranscript(fullTranscript)
+      transcriptRef.current = fullTranscript
+    }
 
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current)
+    recognition.onerror = (event: any) => {
+      const messages: Record<string, string> = {
+        "not-allowed": "Microphone access was denied. Allow it in your browser settings to record.",
+        "no-speech": "No speech was detected.",
+        "audio-capture": "No microphone was found.",
       }
-      debounceRef.current = setTimeout(() => {
-        onTranscriptUpdate(fullTranscript)
-      }, 2000)
+      setError(messages[event.error] ?? `Recording error: ${event.error}`)
+      setIsRecording(false)
+      if (flushIntervalRef.current) clearInterval(flushIntervalRef.current)
+    }
+
+    recognition.onend = () => {
+      setIsRecording(false)
+      if (flushIntervalRef.current) clearInterval(flushIntervalRef.current)
+      flushTranscript()
     }
 
     recognition.start()
     recognitionRef.current = recognition
+    transcriptRef.current = ""
+    lastSentRef.current = ""
+    flushIntervalRef.current = setInterval(flushTranscript, 2000)
     setIsRecording(true)
   }
 
   function stopRecording() {
     recognitionRef.current?.stop()
+    if (flushIntervalRef.current) clearInterval(flushIntervalRef.current)
+    flushTranscript()
     setIsRecording(false)
   }
 
@@ -54,6 +88,7 @@ export default function RecordButton({
       >
         {isRecording ? "Stop Recording" : "Start Recording"}
       </button>
+      {error && <p className="text-red-400">{error}</p>}
       <p>{transcript}</p>
     </div>
   )
