@@ -4,46 +4,15 @@ import { useState } from "react"
 import CodeEditor from "@/components/CodeEditor"
 import RecordButton from "@/components/RecordButton"
 import ThemeToggle from "@/components/ThemeToggle"
+import NotificationButton from "@/components/NotificationButton"
+import LoginButton from "@/components/LoginButton"
+import { QUESTION_CATEGORIES, findQuestionById } from "@/data/questions"
 
 type TimelineEntry = {
   time: number
   type: "code" | "speech"
   content: string
 }
-
-type Question = {
-  id: string
-  title: string
-  prompt: string
-}
-
-const QUESTIONS: Question[] = [
-  {
-    id: "two-sum",
-    title: "Two Sum",
-    prompt: "Given an array of integers and a target, return the indices of the two numbers that add up to the target.",
-  },
-  {
-    id: "reverse-string",
-    title: "Reverse a String",
-    prompt: "Write a function that reverses a string in place.",
-  },
-  {
-    id: "fizzbuzz",
-    title: "FizzBuzz",
-    prompt: "Print numbers 1 to 100. For multiples of 3, print 'Fizz'; for multiples of 5, print 'Buzz'; for multiples of both, print 'FizzBuzz'.",
-  },
-  {
-    id: "valid-palindrome",
-    title: "Valid Palindrome",
-    prompt: "Given a string, determine if it's a palindrome, considering only alphanumeric characters and ignoring case.",
-  },
-  {
-    id: "max-subarray",
-    title: "Maximum Subarray",
-    prompt: "Given an integer array, find the contiguous subarray with the largest sum and return that sum.",
-  },
-]
 
 function formatTimelineForGrading(entries: TimelineEntry[]): string {
   const sorted = [...entries].sort((a, b) => a.time - b.time)
@@ -73,7 +42,7 @@ export default function Home() {
   const [startTime] = useState(Date.now())
   const [isGrading, setIsGrading] = useState(false)
   const [feedback, setFeedback] = useState("")
-  const [selectedQuestion, setSelectedQuestion] = useState<Question>(QUESTIONS[0])
+  const [selectedQuestion, setSelectedQuestion] = useState(QUESTION_CATEGORIES[0].questions[0])
   const [sessionId, setSessionId] = useState(0)
 
   function addEntry(type: "code" | "speech", content: string) {
@@ -100,7 +69,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center p-6 sm:p-10">
       <div className="flex w-full max-w-4xl flex-col gap-6">
-        <header className="animate-fade-in-up flex items-start justify-between gap-4">
+        <header className="animate-fade-in-up relative z-20 flex items-start justify-between gap-4">
           <div className="flex flex-col gap-1.5">
             <h1 className="bg-gradient-to-r from-accent to-code-accent bg-clip-text text-4xl font-bold tracking-tight text-transparent">
               CodeAloud
@@ -109,7 +78,11 @@ export default function Home() {
               Practice explaining your code out loud, like a real interview.
             </p>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-3">
+            <LoginButton />
+            <NotificationButton />
+            <ThemeToggle />
+          </div>
         </header>
 
         <section
@@ -123,15 +96,19 @@ export default function Home() {
             <select
               value={selectedQuestion.id}
               onChange={(e) => {
-                const found = QUESTIONS.find((q) => q.id === e.target.value)
+                const found = findQuestionById(e.target.value)
                 if (found) setSelectedQuestion(found)
               }}
               className="w-full appearance-none rounded-lg border border-border bg-background py-2.5 pl-3 pr-9 text-foreground transition-colors duration-150 hover:border-accent focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
             >
-              {QUESTIONS.map((q) => (
-                <option key={q.id} value={q.id}>
-                  {q.title}
-                </option>
+              {QUESTION_CATEGORIES.map((category) => (
+                <optgroup key={category.id} label={category.label}>
+                  {category.questions.map((q) => (
+                    <option key={q.id} value={q.id}>
+                      {q.title}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </select>
             <svg
