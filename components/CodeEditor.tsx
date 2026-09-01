@@ -108,48 +108,57 @@ export default function CodeEditor({
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <p className="text-xs text-gray-400">
+    <div className="flex flex-col gap-3">
+      <p className="text-xs text-muted">
         Python only — Run Code executes this via Pyodide (Python compiled to WebAssembly), sandboxed in an iframe.
       </p>
-      <Editor
-        height="500px"
-        defaultLanguage="python"
-        defaultValue="# Write your Python solution here"
-        theme="vs-dark"
-        onChange={handleChange}
-        options={{
-          autoClosingBrackets: "never",
-          autoSurround: "never",
-          autoIndent: "none",
-          quickSuggestions: false,
-          suggestOnTriggerCharacters: false,
-          acceptSuggestionOnEnter: "off",
-          tabCompletion: "off",
-          wordBasedSuggestions: "off",
-        }}
-      />
+
+      <div className="overflow-hidden rounded-lg border border-border">
+        <Editor
+          height="500px"
+          defaultLanguage="python"
+          defaultValue="# Write your Python solution here"
+          theme="vs-dark"
+          onChange={handleChange}
+          options={{
+            autoClosingBrackets: "never",
+            autoSurround: "never",
+            autoIndent: "none",
+            quickSuggestions: false,
+            suggestOnTriggerCharacters: false,
+            acceptSuggestionOnEnter: "off",
+            tabCompletion: "off",
+            wordBasedSuggestions: "off",
+          }}
+        />
+      </div>
 
       <div className="flex items-center gap-2">
         <button
           onClick={runCode}
           disabled={isRunning || !isReady}
-          className="px-4 py-2 bg-purple-600 text-white rounded disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-lg bg-code-accent px-4 py-2 font-medium text-white transition-all duration-150 hover:scale-[1.02] hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
         >
+          {(isRunning || !isReady) && (
+            <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+          )}
           {!isReady ? "Loading Python runtime..." : isRunning ? "Running..." : "Run Code"}
         </button>
       </div>
 
-      <div className="p-3 bg-black text-sm font-mono rounded h-32 overflow-y-auto">
-        {output.length === 0 ? (
-          <span className="text-gray-500">Output will appear here</span>
-        ) : (
-          output.map((line, i) => (
-            <div key={i} className={line.type === "error" ? "text-red-400" : "text-green-400"}>
-              {line.text}
-            </div>
-          ))
-        )}
+      <div>
+        <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted">Output</h3>
+        <div className="h-32 overflow-y-auto rounded-lg border border-border bg-black/90 p-3 font-mono text-sm">
+          {output.length === 0 ? (
+            <span className="text-gray-500">Output will appear here</span>
+          ) : (
+            output.map((line, i) => (
+              <div key={i} className={line.type === "error" ? "text-red-400" : "text-green-400"}>
+                {line.text}
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
       <iframe ref={iframeRef} sandbox="allow-scripts" className="hidden" title="code-runner" />

@@ -81,15 +81,37 @@ export default function RecordButton({
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <button
-        onClick={isRecording ? stopRecording : startRecording}
-        className="px-4 py-2 bg-blue-600 text-white rounded"
-      >
-        {isRecording ? "Stop Recording" : "Start Recording"}
-      </button>
-      {error && <p className="text-red-400">{error}</p>}
-      <p>{transcript}</p>
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-3">
+        <button
+          onClick={isRecording ? stopRecording : startRecording}
+          className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium text-white transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] ${
+            isRecording
+              ? "animate-pulse-ring bg-danger"
+              : "bg-accent hover:bg-accent-hover"
+          }`}
+        >
+          <span
+            className={`h-2 w-2 rounded-full bg-white ${isRecording ? "animate-blink" : ""}`}
+          />
+          {isRecording ? "Stop Recording" : "Start Recording"}
+        </button>
+        {isRecording && (
+          <span className="text-xs font-medium uppercase tracking-wide text-danger">
+            Listening…
+          </span>
+        )}
+      </div>
+
+      {error && (
+        <p className="rounded-lg border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">
+          {error}
+        </p>
+      )}
+
+      <p className="min-h-6 text-sm leading-relaxed text-muted">
+        {transcript || "Your spoken explanation will appear here…"}
+      </p>
     </div>
   )
 }
