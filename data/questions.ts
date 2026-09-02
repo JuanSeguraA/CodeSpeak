@@ -116,6 +116,174 @@ export const QUESTION_CATEGORIES: QuestionCategory[] = [
       },
     ],
   },
+  {
+    id: "sliding-window",
+    label: "Sliding Window",
+    questions: [
+      {
+        id: "sliding-window-maximum",
+        title: "Sliding Window Maximum",
+        prompt: "Given an array of integers and a window size k, return the maximum value in each sliding window as it moves from the left to the right of the array.",
+      },
+      {
+        id: "longest-repeating-character-replacement",
+        title: "Longest Repeating Character Replacement",
+        prompt: "Given a string and an integer k, find the length of the longest substring containing the same letter after replacing at most k characters in the string.",
+      },
+      {
+        id: "minimum-window-substring",
+        title: "Minimum Window Substring",
+        prompt: "Given two strings s and t, find the minimum window substring of s such that every character in t (including duplicates) is included in the window.",
+      },
+    ],
+  },
+  {
+    id: "stack",
+    label: "Stack",
+    questions: [
+      {
+        id: "valid-parentheses",
+        title: "Valid Parentheses",
+        prompt: "Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
+      },
+      {
+        id: "min-stack",
+        title: "Min Stack",
+        prompt: "Design a stack that supports push, pop, top, and retrieving the minimum element, all in constant time.",
+      },
+      {
+        id: "evaluate-reverse-polish-notation",
+        title: "Evaluate Reverse Polish Notation",
+        prompt: "Evaluate the value of an arithmetic expression given in Reverse Polish Notation, where valid operators are +, -, *, and /.",
+      },
+    ],
+  },
+  {
+    id: "binary-search",
+    label: "Binary Search",
+    questions: [
+      {
+        id: "binary-search",
+        title: "Binary Search",
+        prompt: "Given a sorted array of integers and a target value, return the index of the target if it exists in the array, or -1 if it doesn't.",
+      },
+      {
+        id: "search-in-rotated-sorted-array",
+        title: "Search in Rotated Sorted Array",
+        prompt: "Given a rotated sorted array of distinct integers and a target, return the index of the target, or -1 if it isn't present.",
+      },
+      {
+        id: "find-minimum-in-rotated-sorted-array",
+        title: "Find Minimum in Rotated Sorted Array",
+        prompt: "Given a rotated sorted array of unique elements, find and return the minimum element in the array.",
+      },
+    ],
+  },
+  {
+    id: "linked-list",
+    label: "Linked List",
+    questions: [
+      {
+        id: "reverse-linked-list",
+        title: "Reverse Linked List",
+        prompt: "Given the head of a singly linked list, reverse the list and return the new head.",
+      },
+      {
+        id: "merge-two-sorted-lists",
+        title: "Merge Two Sorted Lists",
+        prompt: "Given the heads of two sorted linked lists, merge them into one sorted list and return its head.",
+      },
+      {
+        id: "linked-list-cycle",
+        title: "Linked List Cycle",
+        prompt: "Given the head of a linked list, determine if the linked list has a cycle in it.",
+      },
+    ],
+  },
+  {
+    id: "trees",
+    label: "Trees",
+    questions: [
+      {
+        id: "invert-binary-tree",
+        title: "Invert Binary Tree",
+        prompt: "Given the root of a binary tree, invert the tree so that it is the mirror of itself, and return its root.",
+      },
+      {
+        id: "maximum-depth-of-binary-tree",
+        title: "Maximum Depth of Binary Tree",
+        prompt: "Given the root of a binary tree, return its maximum depth, i.e. the number of nodes along the longest path from the root down to the farthest leaf.",
+      },
+      {
+        id: "validate-binary-search-tree",
+        title: "Validate Binary Search Tree",
+        prompt: "Given the root of a binary tree, determine if it is a valid binary search tree.",
+      },
+    ],
+  },
+  {
+    id: "heap",
+    label: "Heap / Priority Queue",
+    questions: [
+      {
+        id: "kth-largest-element-in-an-array",
+        title: "Kth Largest Element in an Array",
+        prompt: "Given an integer array and an integer k, return the kth largest element in the array.",
+      },
+      {
+        id: "top-k-frequent-elements",
+        title: "Top K Frequent Elements",
+        prompt: "Given an integer array and an integer k, return the k most frequent elements in the array.",
+      },
+      {
+        id: "find-median-from-data-stream",
+        title: "Find Median from Data Stream",
+        prompt: "Design a data structure that supports adding integers one at a time and finding the median of all elements added so far.",
+      },
+    ],
+  },
+  {
+    id: "graphs",
+    label: "Graphs",
+    questions: [
+      {
+        id: "number-of-islands",
+        title: "Number of Islands",
+        prompt: "Given a 2D grid of '1's (land) and '0's (water), count the number of islands, where an island is surrounded by water and formed by connecting adjacent land horizontally or vertically.",
+      },
+      {
+        id: "clone-graph",
+        title: "Clone Graph",
+        prompt: "Given a reference to a node in a connected undirected graph, return a deep copy (clone) of the graph.",
+      },
+      {
+        id: "course-schedule",
+        title: "Course Schedule",
+        prompt: "Given the total number of courses and a list of prerequisite pairs, determine if it's possible to finish all courses without a cyclic dependency.",
+      },
+    ],
+  },
+  {
+    id: "intervals",
+    label: "Intervals",
+    questions: [
+      {
+        id: "merge-intervals",
+        title: "Merge Intervals",
+        prompt: "Given an array of intervals, merge all overlapping intervals and return an array of the non-overlapping intervals covering the input.",
+      },
+      {
+        id: "insert-interval",
+        title: "Insert Interval",
+        prompt: "Given a set of non-overlapping intervals sorted by start time and a new interval, insert the new interval and merge if necessary.",
+      },
+      {
+        id: "non-overlapping-intervals",
+        title: "Non-overlapping Intervals",
+        prompt: "Given an array of intervals, find the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.",
+      },
+    ],
+  },
 ]
 
 export function findQuestionById(id: string): Question | undefined {
