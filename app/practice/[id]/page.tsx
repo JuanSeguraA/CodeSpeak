@@ -6,7 +6,9 @@ import { useParams } from "next/navigation"
 import CodeEditor from "@/components/CodeEditor"
 import RecordButton from "@/components/RecordButton"
 import HeaderControls from "@/components/HeaderControls"
+import Logo from "@/components/Logo"
 import { QUESTION_CATEGORIES, findQuestionById } from "@/data/questions"
+import { markDateCompleted } from "@/lib/completions"
 
 type TimelineEntry = {
   time: number
@@ -60,6 +62,7 @@ export default function PracticePage() {
     const formatted = formatTimelineForGrading(timeline)
     const result = await getFeedback(formatted)
     setFeedback(result)
+    markDateCompleted()
     setIsGrading(false)
   }
 

@@ -10,9 +10,9 @@ export default function NotificationButton() {
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label="View notifications"
-        className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-all duration-150 hover:scale-105 hover:bg-surface-hover active:scale-95"
+        className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-all duration-150 hover:scale-105 hover:bg-surface-hover active:scale-95"
       >
-        <svg viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
+        <svg viewBox="0 0 20 20" fill="currentColor" className="h-[22px] w-[22px]">
           <path d="M10 2a6 6 0 00-6 6v2.586l-1.707 1.707A1 1 0 003 14h14a1 1 0 00.707-1.707L16 10.586V8a6 6 0 00-6-6zM8.5 16a1.5 1.5 0 003 0h-3z" />
         </svg>
         <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-danger" />
