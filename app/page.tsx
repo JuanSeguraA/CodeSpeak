@@ -6,7 +6,13 @@ import CodeReviewCard from "@/components/CodeReviewCard"
 import CompanyMarquee from "@/components/CompanyMarquee"
 import Logo from "@/components/Logo"
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>
+}) {
+  const { category } = await searchParams
+
   return (
     <main className="flex min-h-screen flex-col gap-6 sm:gap-8">
       <header className="animate-fade-in-up px-6 pt-6 sm:px-10 sm:pt-10">
@@ -36,7 +42,7 @@ export default function Home() {
         </div>
 
         <div className="min-w-0 flex-1" style={{ animationDelay: "80ms" }}>
-          <ExerciseBrowser />
+          <ExerciseBrowser initialCategoryId={category} />
         </div>
 
         <div className="flex shrink-0 flex-col gap-6 lg:w-72" style={{ animationDelay: "100ms" }}>

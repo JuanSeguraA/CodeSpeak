@@ -1191,6 +1191,10 @@ export function findQuestionById(id: string): Question | undefined {
   return undefined
 }
 
+export function findCategoryByQuestionId(id: string): QuestionCategory | undefined {
+  return QUESTION_CATEGORIES.find((category) => category.questions.some((q) => q.id === id))
+}
+
 export function getAllCompanies(): string[] {
   const companies = new Set<string>()
 

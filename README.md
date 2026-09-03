@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CodeSpeak
 
-## Getting Started
+**Practice explaining your code out loud, like a real interview.**
 
-First, run the development server:
+[![Watch the CodeSpeak demo](https://img.youtube.com/vi/w5bmd404M3c/maxresdefault.jpg)](https://youtu.be/w5bmd404M3c)
+
+▶️ [Watch the demo on YouTube](https://youtu.be/w5bmd404M3c)
+
+Most interview prep trains the wrong skill. You can grind two hundred problems in silence and still freeze the moment someone's watching you think — because a technical interview isn't a coding test, it's a coding *conversation*. CodeSpeak is built around that gap: you talk through your approach while you write it, get graded on both, and build the muscle of thinking out loud under a little pressure, before it costs you an offer.
+
+## What it does
+
+**150 problems, organized the way interviews actually go.** Eighteen patterns — arrays & hashing, two pointers, sliding window, trees, graphs, dynamic programming, and more — each tagged with a difficulty and the companies known to ask it. Search by title, filter by difficulty or company, and track completion per category as you work through them.
+
+**Speak your reasoning, not just your code.** Hit record and explain your approach out loud while you write the solution in a full Monaco-powered editor — the same editor that runs VS Code. Your speech is transcribed live, timestamped alongside every keystroke, so what you *said* and what you *typed* are captured together.
+
+**Feedback that grades the interview, not just the code.** Submit a session and Claude reviews the transcript for how clearly you explained your thinking, whether your explanation matched what you actually wrote, and whether you talked before you typed or after — the thing that trips people up most. You get a score and a few sentences of specific, actionable feedback, not a pass/fail.
+
+**A memory for your practice.** A monthly heatmap tracks the days you showed up. Every exercise gets a completion checkbox, a personal difficulty rating, and a spot for your own notes — the "I blanked on this edge case" reminders future-you will actually thank you for. Rated exercises roll up into a Review view grouped hardest-first, so your weak spots surface on their own instead of hiding in a list of 150.
+
+## Tech stack
+
+- **[Next.js](https://nextjs.org)** (App Router) + **React** + **TypeScript**
+- **Tailwind CSS** for styling
+- **[Monaco Editor](https://microsoft.github.io/monaco-editor/)** for the in-browser code editor
+- **Web Speech API** for live speech-to-text transcription
+- **[Claude](https://www.anthropic.com/claude)** (via the Anthropic SDK) for grading practice sessions
+- Lightweight file-based auth (bcrypt-hashed passwords, signed sessions) — no external database
+
+## Getting started
+
+```bash
+npm install
+```
+
+Create a `.env.local` file with:
+
+```bash
+ANTHROPIC_API_KEY=your-anthropic-api-key   # powers the "Get Feedback" grading
+AUTH_SECRET=any-long-random-string          # signs login sessions
+```
+
+Then run the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) and start practicing.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> **Note:** live transcription relies on the Web Speech API, which currently only ships in Chrome and Edge. Other browsers will let you code and take notes, but won't record your explanation.

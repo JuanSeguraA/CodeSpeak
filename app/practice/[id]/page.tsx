@@ -2,14 +2,21 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import CodeEditor from "@/components/CodeEditor"
 import RecordButton from "@/components/RecordButton"
 import HeaderControls from "@/components/HeaderControls"
 import Logo from "@/components/Logo"
 import NotesButton from "@/components/NotesButton"
 import DifficultyRating from "@/components/DifficultyRating"
-import { DIFFICULTY_META, QUESTION_CATEGORIES, findQuestionById } from "@/data/questions"
+import {
+  DIFFICULTY_META,
+  QUESTION_CATEGORIES,
+  findQuestionById,
+  findCategoryByQuestionId,
+  type Question,
+  type QuestionCategory,
+} from "@/data/questions"
 import { markDateCompleted } from "@/lib/completions"
 
 type TimelineEntry = {
@@ -43,13 +50,25 @@ async function getFeedback(transcript: string): Promise<string> {
 
 export default function PracticePage() {
   const params = useParams<{ id: string }>()
-  const initialQuestion = findQuestionById(params.id) ?? QUESTION_CATEGORIES[0].questions[0]
+  const question = findQuestionById(params.id) ?? QUESTION_CATEGORIES[0].questions[0]
+
+  return <PracticeContent key={question.id} question={question} />
+}
+
+function PracticeContent({ question }: { question: Question }) {
+  const router = useRouter()
+  const category: QuestionCategory = findCategoryByQuestionId(question.id) ?? QUESTION_CATEGORIES[0]
+  const indexInCategory = category.questions.findIndex((q) => q.id === question.id)
+  const prevQuestion = indexInCategory > 0 ? category.questions[indexInCategory - 1] : null
+  const nextQuestion =
+    indexInCategory >= 0 && indexInCategory < category.questions.length - 1
+      ? category.questions[indexInCategory + 1]
+      : null
 
   const [timeline, setTimeline] = useState<TimelineEntry[]>([])
   const [startTime] = useState(Date.now())
   const [isGrading, setIsGrading] = useState(false)
   const [feedback, setFeedback] = useState("")
-  const [selectedQuestion, setSelectedQuestion] = useState(initialQuestion)
   const [sessionId, setSessionId] = useState(0)
 
   function addEntry(type: "code" | "speech", content: string) {
@@ -79,15 +98,31 @@ export default function PracticePage() {
       <div className="flex w-full max-w-4xl flex-col gap-6">
         <header className="animate-fade-in-up relative z-20 flex items-start justify-between gap-4">
           <div className="flex flex-col gap-1.5">
-            <Link
-              href="/"
-              className="mb-1 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted transition-colors duration-150 hover:text-foreground"
-            >
-              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5">
-                <path d="M12.5 5L7.5 10L12.5 15" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              Back to exercises
-            </Link>
+            <nav aria-label="Breadcrumb" className="mb-1 flex items-center gap-1.5 text-sm text-muted">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-1.5 font-medium transition-colors duration-150 hover:text-foreground"
+              >
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5">
+                  <path d="M12.5 5L7.5 10L12.5 15" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Exercises
+              </Link>
+              <span className="text-border">/</span>
+              <Link
+                href={`/?category=${category.id}`}
+                className="font-medium transition-colors duration-150 hover:text-foreground"
+              >
+                {category.label}
+              </Link>
+              <span className="text-border">/</span>
+              <span
+                className="max-w-[10rem] truncate font-medium text-foreground sm:max-w-xs"
+                title={question.title}
+              >
+                {question.title}
+              </span>
+            </nav>
             <div className="flex items-center gap-1 sm:gap-1.5">
               <Logo className="h-10 w-10 text-code-accent sm:h-14 sm:w-14" />
               <h1 className="bg-gradient-to-r from-accent to-code-accent bg-clip-text text-2xl font-bold tracking-tight text-transparent sm:text-4xl">
@@ -101,6 +136,54 @@ export default function PracticePage() {
           <HeaderControls />
         </header>
 
+        <nav
+          aria-label="Exercise navigation"
+          className="animate-fade-in-up flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm shadow-lg shadow-black/5"
+          style={{ animationDelay: "20ms" }}
+        >
+          {prevQuestion ? (
+            <Link
+              href={`/practice/${prevQuestion.id}`}
+              className="flex min-w-0 items-center gap-1.5 font-medium text-foreground transition-colors duration-150 hover:text-accent"
+            >
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5 shrink-0">
+                <path d="M12.5 5L7.5 10L12.5 15" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span className="truncate">{prevQuestion.title}</span>
+            </Link>
+          ) : (
+            <span className="flex min-w-0 items-center gap-1.5 text-muted opacity-40">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5 shrink-0">
+                <path d="M12.5 5L7.5 10L12.5 15" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Previous
+            </span>
+          )}
+
+          <span className="shrink-0 text-xs font-medium tabular-nums text-muted">
+            {indexInCategory + 1} / {category.questions.length} in {category.label}
+          </span>
+
+          {nextQuestion ? (
+            <Link
+              href={`/practice/${nextQuestion.id}`}
+              className="flex min-w-0 items-center justify-end gap-1.5 font-medium text-foreground transition-colors duration-150 hover:text-accent"
+            >
+              <span className="truncate">{nextQuestion.title}</span>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5 shrink-0">
+                <path d="M7.5 5L12.5 10L7.5 15" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          ) : (
+            <span className="flex min-w-0 items-center justify-end gap-1.5 text-muted opacity-40">
+              Next
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5 shrink-0">
+                <path d="M7.5 5L12.5 10L7.5 15" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+          )}
+        </nav>
+
         <section
           className="animate-fade-in-up rounded-2xl border border-border bg-surface p-5 shadow-lg shadow-black/5"
           style={{ animationDelay: "40ms" }}
@@ -110,16 +193,13 @@ export default function PracticePage() {
           </label>
           <div className="relative">
             <select
-              value={selectedQuestion.id}
-              onChange={(e) => {
-                const found = findQuestionById(e.target.value)
-                if (found) setSelectedQuestion(found)
-              }}
+              value={question.id}
+              onChange={(e) => router.push(`/practice/${e.target.value}`)}
               className="w-full appearance-none rounded-lg border border-border bg-background py-2.5 pl-3 pr-9 text-foreground transition-colors duration-150 hover:border-accent focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
             >
-              {QUESTION_CATEGORIES.map((category) => (
-                <optgroup key={category.id} label={category.label}>
-                  {category.questions.map((q) => (
+              {QUESTION_CATEGORIES.map((cat) => (
+                <optgroup key={cat.id} label={cat.label}>
+                  {cat.questions.map((q) => (
                     <option key={q.id} value={q.id}>
                       {q.title}
                     </option>
@@ -138,17 +218,17 @@ export default function PracticePage() {
             </svg>
           </div>
 
-          <p className="mt-4 leading-relaxed text-foreground/90">{selectedQuestion.prompt}</p>
+          <p className="mt-4 leading-relaxed text-foreground/90">{question.prompt}</p>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-xs font-medium text-foreground">
               <span
                 className="h-2 w-2 rounded-full"
-                style={{ backgroundColor: DIFFICULTY_META[selectedQuestion.difficulty].color }}
+                style={{ backgroundColor: DIFFICULTY_META[question.difficulty].color }}
               />
-              {selectedQuestion.difficulty}
+              {question.difficulty}
             </span>
-            {selectedQuestion.companies.map((company) => (
+            {question.companies.map((company) => (
               <span
                 key={company}
                 className="rounded-full bg-background px-2.5 py-1 text-xs text-muted"
@@ -201,7 +281,7 @@ export default function PracticePage() {
             Reset
           </button>
 
-          <NotesButton questionId={selectedQuestion.id} questionTitle={selectedQuestion.title} />
+          <NotesButton questionId={question.id} questionTitle={question.title} />
         </div>
 
         {feedback && (
@@ -213,7 +293,7 @@ export default function PracticePage() {
           </div>
         )}
 
-        <DifficultyRating questionId={selectedQuestion.id} />
+        <DifficultyRating questionId={question.id} />
       </div>
     </main>
   )
