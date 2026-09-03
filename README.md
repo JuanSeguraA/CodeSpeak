@@ -10,7 +10,7 @@ Most interview prep trains the wrong skill. You can grind two hundred problems i
 
 ## What it does
 
-**150 problems, organized the way interviews actually go.** Eighteen patterns — arrays & hashing, two pointers, sliding window, trees, graphs, dynamic programming, and more. Each tagged with a difficulty and the companies known to ask it. Search by title, filter by difficulty or company, and track completion per category as you work through them.
+**150 problems, organized the way interviews actually go.** Eighteen patterns: arrays & hashing, two pointers, sliding window, trees, graphs, dynamic programming, and more. Each tagged with a difficulty and the companies known to ask it. Search by title, filter by difficulty or company, and track completion per category as you work through them.
 
 **Speak your reasoning, not just your code.** Hit record and explain your approach out loud while you write the solution in a full Monaco-powered editor, the same editor that runs VS Code. Your speech is transcribed live, timestamped alongside every keystroke, so what you *said* and what you *typed* are captured together.
 
