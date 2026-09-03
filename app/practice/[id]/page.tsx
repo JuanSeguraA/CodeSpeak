@@ -7,7 +7,9 @@ import CodeEditor from "@/components/CodeEditor"
 import RecordButton from "@/components/RecordButton"
 import HeaderControls from "@/components/HeaderControls"
 import Logo from "@/components/Logo"
-import { QUESTION_CATEGORIES, findQuestionById } from "@/data/questions"
+import NotesButton from "@/components/NotesButton"
+import DifficultyRating from "@/components/DifficultyRating"
+import { DIFFICULTY_META, QUESTION_CATEGORIES, findQuestionById } from "@/data/questions"
 import { markDateCompleted } from "@/lib/completions"
 
 type TimelineEntry = {
@@ -86,9 +88,12 @@ export default function PracticePage() {
               </svg>
               Back to exercises
             </Link>
-            <h1 className="bg-gradient-to-r from-accent to-code-accent bg-clip-text text-4xl font-bold tracking-tight text-transparent">
-              CodeAloud
-            </h1>
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              <Logo className="h-6 w-6 text-code-accent sm:h-8 sm:w-8" />
+              <h1 className="bg-gradient-to-r from-accent to-code-accent bg-clip-text text-2xl font-bold tracking-tight text-transparent sm:text-4xl">
+                CodeAloud
+              </h1>
+            </div>
             <p className="text-muted">
               Practice explaining your code out loud, like a real interview.
             </p>
@@ -134,6 +139,24 @@ export default function PracticePage() {
           </div>
 
           <p className="mt-4 leading-relaxed text-foreground/90">{selectedQuestion.prompt}</p>
+
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-xs font-medium text-foreground">
+              <span
+                className="h-2 w-2 rounded-full"
+                style={{ backgroundColor: DIFFICULTY_META[selectedQuestion.difficulty].color }}
+              />
+              {selectedQuestion.difficulty}
+            </span>
+            {selectedQuestion.companies.map((company) => (
+              <span
+                key={company}
+                className="rounded-full bg-background px-2.5 py-1 text-xs text-muted"
+              >
+                {company}
+              </span>
+            ))}
+          </div>
         </section>
 
         <div
@@ -177,6 +200,8 @@ export default function PracticePage() {
           >
             Reset
           </button>
+
+          <NotesButton questionId={selectedQuestion.id} questionTitle={selectedQuestion.title} />
         </div>
 
         {feedback && (
@@ -187,6 +212,8 @@ export default function PracticePage() {
             <p className="whitespace-pre-wrap leading-relaxed text-foreground/90">{feedback}</p>
           </div>
         )}
+
+        <DifficultyRating questionId={selectedQuestion.id} />
       </div>
     </main>
   )

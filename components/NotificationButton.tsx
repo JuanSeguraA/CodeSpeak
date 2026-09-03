@@ -1,12 +1,16 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useRef, useState } from "react"
+import { useClickOutside } from "@/lib/useClickOutside"
 
 export default function NotificationButton() {
   const [isOpen, setIsOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useClickOutside(containerRef, isOpen, useCallback(() => setIsOpen(false), []))
 
   return (
-    <div className="relative">
+    <div className="relative" ref={containerRef}>
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label="View notifications"

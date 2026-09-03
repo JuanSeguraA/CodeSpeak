@@ -1,0 +1,18 @@
+"use client"
+
+import { useEffect, type RefObject } from "react"
+
+export function useClickOutside(ref: RefObject<HTMLElement | null>, isActive: boolean, onOutsideClick: () => void) {
+  useEffect(() => {
+    if (!isActive) return
+
+    function handlePointerDown(event: PointerEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        onOutsideClick()
+      }
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown)
+    return () => document.removeEventListener("pointerdown", handlePointerDown)
+  }, [ref, isActive, onOutsideClick])
+}

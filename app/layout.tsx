@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { AuthProvider } from "@/components/AuthProvider";
+import AnimationCleanup from "@/components/AnimationCleanup";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -36,7 +38,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <AnimationCleanup />
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }

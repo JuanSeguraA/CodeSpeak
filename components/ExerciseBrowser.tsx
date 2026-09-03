@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { QUESTION_CATEGORIES } from "@/data/questions"
+import { DIFFICULTY_META, QUESTION_CATEGORIES } from "@/data/questions"
 
 export default function ExerciseBrowser() {
   const [expanded, setExpanded] = useState<Set<string>>(new Set())
@@ -65,16 +65,31 @@ export default function ExerciseBrowser() {
                       href={`/practice/${question.id}`}
                       className="flex items-center justify-between gap-3 py-3 pl-11 pr-5 text-sm text-foreground/90 transition-colors duration-150 hover:bg-surface-hover hover:text-accent"
                     >
-                      {question.title}
-                      <svg
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        className="h-3.5 w-3.5 shrink-0"
-                      >
-                        <path d="M7.5 5L12.5 10L7.5 15" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+                      <span className="flex min-w-0 items-center gap-2">
+                        <span
+                          className="h-2 w-2 shrink-0 rounded-full"
+                          title={question.difficulty}
+                          style={{ backgroundColor: DIFFICULTY_META[question.difficulty].color }}
+                        />
+                        <span className="truncate" title={question.title}>{question.title}</span>
+                      </span>
+
+                      <span className="flex shrink-0 items-center gap-3">
+                        {question.companies.length > 0 && (
+                          <span className="hidden text-xs text-muted sm:inline">
+                            {question.companies.join(", ")}
+                          </span>
+                        )}
+                        <svg
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          className="h-3.5 w-3.5 shrink-0"
+                        >
+                          <path d="M7.5 5L12.5 10L7.5 15" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </span>
                     </Link>
                   </li>
                 ))}
