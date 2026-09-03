@@ -1,4 +1,4 @@
-const STORAGE_KEY = "codealoud:notes"
+const STORAGE_KEY = "codespeak:notes"
 
 type NoteRecord = { text: string; updatedAt: number }
 type NotesMap = Record<string, NoteRecord>

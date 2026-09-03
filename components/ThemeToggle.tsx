@@ -33,8 +33,18 @@ export default function ThemeToggle() {
       className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-all duration-150 hover:scale-105 hover:bg-surface-hover active:scale-95"
     >
       {theme === "dark" ? (
-        <svg viewBox="0 0 20 20" fill="currentColor" className="h-[22px] w-[22px]">
-          <path d="M10 3a1 1 0 011 1v1a1 1 0 11-2 0V4a1 1 0 011-1zm0 12a4 4 0 100-8 4 4 0 000 8zm7-5a1 1 0 110 2h-1a1 1 0 110-2h1zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 011 1zm11.657-5.657a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM6.464 13.536a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zm9.193 1.414a1 1 0 01-1.414 0l-.707-.707a1 1 0 111.414-1.414l.707.707a1 1 0 010 1.414zM5.757 6.464a1 1 0 01-1.414 0l-.707-.707a1 1 0 011.414-1.414l.707.707a1 1 0 010 1.414zM10 17a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z" />
+        <svg viewBox="0 0 20 20" fill="none" className="h-[22px] w-[22px]">
+          <circle cx="10" cy="10" r="4" fill="currentColor" />
+          <g stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+            <path d="M10 1.5V3.25" />
+            <path d="M10 16.75V18.5" />
+            <path d="M18.5 10H16.75" />
+            <path d="M3.25 10H1.5" />
+            <path d="M15.89 4.11L14.66 5.34" />
+            <path d="M5.34 14.66L4.11 15.89" />
+            <path d="M15.89 15.89L14.66 14.66" />
+            <path d="M5.34 5.34L4.11 4.11" />
+          </g>
         </svg>
       ) : (
         <svg viewBox="0 0 20 20" fill="currentColor" className="h-[22px] w-[22px]">

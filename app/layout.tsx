@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CodeAloud",
+  title: "CodeSpeak",
   description: "Practice explaining your code out loud, like a real interview.",
 };
 

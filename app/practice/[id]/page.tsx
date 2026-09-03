@@ -88,10 +88,10 @@ export default function PracticePage() {
               </svg>
               Back to exercises
             </Link>
-            <div className="flex items-center gap-2 sm:gap-2.5">
-              <Logo className="h-6 w-6 text-code-accent sm:h-8 sm:w-8" />
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <Logo className="h-10 w-10 text-code-accent sm:h-14 sm:w-14" />
               <h1 className="bg-gradient-to-r from-accent to-code-accent bg-clip-text text-2xl font-bold tracking-tight text-transparent sm:text-4xl">
-                CodeAloud
+                CodeSpeak
               </h1>
             </div>
             <p className="text-muted">

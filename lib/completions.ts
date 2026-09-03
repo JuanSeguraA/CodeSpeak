@@ -1,4 +1,4 @@
-const STORAGE_KEY = "codealoud:completed-dates"
+const STORAGE_KEY = "codespeak:completed-dates"
 
 export function toDateKey(date: Date): string {
   const year = date.getFullYear()

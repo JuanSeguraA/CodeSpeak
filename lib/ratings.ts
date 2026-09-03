@@ -1,4 +1,4 @@
-const STORAGE_KEY = "codealoud:ratings"
+const STORAGE_KEY = "codespeak:ratings"
 
 export type DifficultyLevel = {
   value: number
