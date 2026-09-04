@@ -25,7 +25,7 @@ Most interview prep trains the wrong skill. You can grind two hundred problems i
 - **[Monaco Editor](https://microsoft.github.io/monaco-editor/)** for the in-browser code editor
 - **Web Speech API** for live speech-to-text transcription
 - **[Claude](https://www.anthropic.com/claude)** (via the Anthropic SDK) for grading practice sessions
-- Lightweight file-based auth (bcrypt-hashed passwords, signed sessions) — no external database
+
 
 ## Getting started
 
