@@ -1,4 +1,4 @@
-# CodeSpeak
+# <img src="public/logo.svg" width="32" height="32" alt="" /> CodeSpeak
 
 **Practice explaining your code out loud, like a real interview.**
 
