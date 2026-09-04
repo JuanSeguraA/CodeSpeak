@@ -2,9 +2,9 @@
 
 **Practice explaining your code out loud, like a real interview.**
 
-[![Watch the CodeSpeak demo](https://img.youtube.com/vi/w5bmd404M3c/maxresdefault.jpg)](https://youtu.be/w5bmd404M3c)
+[![Watch the CodeSpeak demo](https://img.youtube.com/vi/bLnyZ129Fv8/maxresdefault.jpg)](https://youtu.be/bLnyZ129Fv8)
 
-▶️ [Watch the demo on YouTube](https://youtu.be/w5bmd404M3c)
+▶️ [Watch the demo on YouTube](https://youtu.be/bLnyZ129Fv8)
 
 Most interview prep trains the wrong skill. You can grind two hundred problems in silence and still freeze the moment someone's watching you think because a technical interview isn't a coding test, it's a coding *conversation*. CodeSpeak is built around that gap: you talk through your approach while you write it, get graded on both, and build the muscle of thinking out loud under a little pressure, before it costs you an offer.
 
